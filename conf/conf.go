@@ -2,7 +2,7 @@ package conf
 
 import (
 	"os"
-	"gomailme/cache"
+	//"gomailme/cache"
 	"gomailme/model"
 	"gomailme/util"
 
@@ -24,5 +24,7 @@ func Init() {
 
 	// 连接数据库
 	model.Database(os.Getenv("MYSQL_DSN"))
-	cache.Redis()
+
+	//因为本项目不需要redis ,故注释掉
+	//cache.Redis()
 }

@@ -1,60 +1,16 @@
 # gomailme
 
-gomailme: Simple Single Golang Web Service
+gomailme: A Simple mail Golang Web Service
 
-go-crud正式改名为gomailme!
-
-使用gomailme开发Web服务: 用最简单的架构，实现够用的框架，服务海量用户
-
-https://github.com/bydmm/gomailme
-
-## gomailme文档
-
-https://gomailme.gourouting.com/
-
-## 视频实况教程
-
-[让我们写个G站吧！Golang全栈编程实况](https://space.bilibili.com/10/channel/detail?cid=78794)
-
-## 使用gomailme开发的项目实例
-
-https://github.com/bydmm/giligili
+gomailme 实现简单的api,直接部署后即可通过简单的url发送邮件
 
 ## 目的
 
-本项目采用了一系列Golang中比较流行的组件，可以以本项目为基础快速搭建Restful Web API
+本项目采用了Singo框架开发web服务，可以以本项目为基础快速拓展自己的邮件需求
 
 ## 特色
 
-本项目已经整合了许多开发API所必要的组件：
-
-1. [Gin](https://github.com/gin-gonic/gin): 轻量级Web框架，自称路由速度是golang最快的 
-2. [GORM](http://gorm.io/docs/index.html): ORM工具。本项目需要配合Mysql使用 
-3. [Gin-Session](https://github.com/gin-contrib/sessions): Gin框架提供的Session操作工具
-4. [Go-Redis](https://github.com/go-redis/redis): Golang Redis客户端
-5. [godotenv](https://github.com/joho/godotenv): 开发环境下的环境变量工具，方便使用环境变量
-6. [Gin-Cors](https://github.com/gin-contrib/cors): Gin框架提供的跨域中间件
-7. 自行实现了国际化i18n的一些基本功能
-8. 本项目是使用基于cookie实现的session来保存登录状态的，如果需要可以自行修改为token验证
-
-本项目已经预先实现了一些常用的代码方便参考和复用:
-
-1. 创建了用户模型
-2. 实现了```/api/v1/user/register```用户注册接口
-3. 实现了```/api/v1/user/login```用户登录接口
-4. 实现了```/api/v1/user/me```用户资料接口(需要登录后获取session)
-5. 实现了```/api/v1/user/logout```用户登出接口(需要登录后获取session)
-
-本项目已经预先创建了一系列文件夹划分出下列模块:
-
-1. api文件夹就是MVC框架的controller，负责协调各部件完成任务
-2. model文件夹负责存储数据库模型和数据库操作相关的代码
-3. service负责处理比较复杂的业务，把业务代码模型化可以有效提高业务代码的质量（比如用户注册，充值，下单等）
-4. serializer储存通用的json模型，把model得到的数据库模型转换成api需要的json对象
-5. cache负责redis缓存相关的代码
-6. auth权限控制文件夹
-7. util一些通用的小工具
-8. conf放一些静态存放的配置文件，其中locales内放置翻译相关的配置文件
+locales内放置翻译相关的配置文件
 
 ## Godotenv
 
@@ -62,6 +18,8 @@ https://github.com/bydmm/giligili
 
 ```shell
 MYSQL_DSN="db_user:db_password@/db_name?charset=utf8&parseTime=True&loc=Local" # Mysql连接地址
+
+#以下为singo自带参数可不配置
 REDIS_ADDR="127.0.0.1:6379" # Redis端口和地址
 REDIS_PW="" # Redis连接密码
 REDIS_DB="" # Redis库从0到10
@@ -86,3 +44,26 @@ go run main.go
 ```
 
 项目运行后启动在3000端口（可以修改，参考gin文档)
+
+##使用方法
+本项目依赖mysql,请确保有mysql数据库正确配置.env(.env由.env.example复制后重命名)。
+设置账号，授权码（也可直接编辑数据库相应字段）
+(本地运行时情况,在服务器上请改变域名)
+（post) http://localhost:3000/mail/set 
+提供
+user（账号） 
+pass(授权码，不是密码，出于邮箱安全的考虑，很多邮箱缺省是关闭 POP3/SMTP 服务的，需要登录邮箱设置后开启。以 QQ 邮箱为例，进入邮箱“设置”，在“帐户”项里就可找到“POP3/SMTP服务”的设置项，进行开启。 可获得授权码)
+可设置账号密码
+
+（post) http://localhost:3000/mail/send 
+提供
+to(收件人，多个收件人用 "," 连接)
+body(邮件内容)
+可发送邮件
+
+（get) http://localhost:3000/mail/send/:to/:body
+直接通过url访问
+提供 to , body 例 http://localhost:3000/mail/send/xxx@qq.com/大笨蛋 可发送大笨蛋到xxx@qq,com
+
+本项目基于qq邮箱，如果是其他邮箱，请在 service\send_service.go修改41，56行（日后可能因为代码电话改变行数）
+
