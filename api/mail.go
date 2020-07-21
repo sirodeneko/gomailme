@@ -49,3 +49,13 @@ func GetSend(c *gin.Context){
 	}
 }
 
+// SetTimeMsg 设置定时消息
+func SetTimeMsg(c *gin.Context){
+	var service service.SetTimeMsgService
+	if err := c.ShouldBind(&service); err == nil {
+		res := service.SetTimeMsg()
+		c.JSON(200, res)
+	} else {
+		c.JSON(200, ErrorResponse(err))
+	}
+}

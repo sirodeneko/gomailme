@@ -28,8 +28,8 @@ func NewRouter() *gin.Engine {
 		// 发送消息
 		v2.GET("send/:to/:body",api.GetSend)
 
-		//// 定时消息（待完成）
-		//v2.POST("setTimeMsg",api.SetTimeMsg)
+		// 定时消息（待完成）
+		v2.POST("setTimeMsg",api.SetTimeMsg)
 		//
 		//// 更新定时消息
 		//v2.POST("updateTimeMsg",api.UpdateTimeMsg)

@@ -1,10 +1,11 @@
 package conf
 
 import (
-	"os"
-	//"gomailme/cache"
+	"gomailme/cache"
+	"gomailme/delayJob"
 	"gomailme/model"
 	"gomailme/util"
+	"os"
 
 	"github.com/joho/godotenv"
 )
@@ -25,6 +26,9 @@ func Init() {
 	// 连接数据库
 	model.Database(os.Getenv("MYSQL_DSN"))
 
-	//因为本项目不需要redis ,故注释掉
-	//cache.Redis()
+	//redis
+	cache.Redis()
+
+	//启动定时任务管理
+	delayJob.Init()
 }

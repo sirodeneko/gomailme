@@ -1,11 +1,11 @@
 package cache
 
 import (
-	"os"
 	"gomailme/util"
+	"os"
 	"strconv"
 
-	"github.com/go-redis/redis"
+	"github.com/go-redis/redis/v7"
 )
 
 // RedisClient Redis缓存客户端单例
